@@ -27,7 +27,6 @@ public class CourseCatalogue {
 				return c;
 			}	
 		}
-		displayCourseNotFoundError();
 		return null;
 	}
 	//Typically, methods that are called from other methods of the class

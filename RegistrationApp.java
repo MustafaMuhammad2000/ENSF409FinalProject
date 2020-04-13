@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 /**
- * the front end of the system, i didnt see make a front end class till way later
+ * the front end of the system, 
  * @author Nicholas Lee
  *
  */
@@ -9,11 +9,13 @@ public class RegistrationApp {
 	private Scanner scan;
 	private Student student;
 	private CourseCatalogue cat;
+	private GUI gui;
 	
 	public RegistrationApp() {
 		scan = new Scanner(System.in);
 		cat = new CourseCatalogue();
 		student = new Student("Nick", 30061802);  
+		gui = new GUI(this);
 	}
 	
 
@@ -39,7 +41,7 @@ public class RegistrationApp {
 					findCourse();
 					break;
 				case 2:
-					addCourse();
+					//addCourse();
 					break;
 				case 3:
 					removeCourse();
@@ -60,7 +62,7 @@ public class RegistrationApp {
 		}
 	}
 	private void viewStudentCourses() {
-		student.printStudentCourses();
+	//	student.printStudentCourses();
 	}
 	
 	private void printCourse(Course course) {
@@ -79,22 +81,22 @@ public class RegistrationApp {
 		printCourse(cat.searchCat(name, id));
 	}
 	
-	private void addCourse() {
-		System.out.println("Please enter course name: ");
-		String name = scan.nextLine().toUpperCase();
-		System.out.println("Please enter course number: ");
-		int id = scan.nextInt();
-		Course course = cat.searchCat(name, id);
-		
-		if(course == null) {
-			System.out.println("course not found");
-			return;
-		}
-		student.addCourse(course);
-	}
+//	private void addCourse() {
+//		System.out.println("Please enter course name: ");
+//		String name = scan.nextLine().toUpperCase();
+//		System.out.println("Please enter course number: ");
+//		int id = scan.nextInt();
+//		Course course = cat.searchCat(name, id);
+//		
+//		if(course == null) {
+//			System.out.println("course not found");
+//			return;
+//		}
+//		student.addCourse(course);
+//	}
 	
 	private void removeCourse() {
-		student.removeCourse();
+	//	student.removeCourse();
 	}
 	
 	private void viewAllCourses() {
@@ -103,9 +105,48 @@ public class RegistrationApp {
 	
 	public static void main (String [] args) {
 		RegistrationApp RA = new RegistrationApp();
-		RA.Menu();
-
-		
 	}
+
+
+	public Scanner getScan() {
+		return scan;
+	}
+
+
+	public void setScan(Scanner scan) {
+		this.scan = scan;
+	}
+
+
+	public Student getStudent() {
+		return student;
+	}
+
+
+	public void setStudent(Student student) {
+		this.student = student;
+	}
+
+
+	public CourseCatalogue getCat() {
+		return cat;
+	}
+
+
+	public void setCat(CourseCatalogue cat) {
+		this.cat = cat;
+	}
+
+
+	public GUI getGui() {
+		return gui;
+	}
+
+
+	public void setGui(GUI gui) {
+		this.gui = gui;
+	}
+	
+	
 
 }

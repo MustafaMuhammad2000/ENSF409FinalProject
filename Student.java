@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 public class Student {
 	
 	private String studentName;
@@ -84,31 +86,44 @@ public class Student {
 		return null;
 	}
 
-	public void printStudentCourses() {
+	public String printStudentCourses() {
+		String s = "";
 		if(offeringList.size() == 0) {
-			System.out.println("student is not enrolled in any courses yet");
-			return;
+			return("student is not enrolled in any courses yet");
+			
 		}
 		for(CourseOffering x: offeringList) {
-			System.out.println(x);
+			s += x +"\n";
 		}
+		return s;
 	}
 	
-	public void addCourse(Course course) {
+	public void addCourse(Course course, GUI gui) {
 		if(course.checkMinClassSize() == false) {
-			System.out.println(course.getCourseName()+" " + course.getCourseNum()+" is not available as minimum class size was not achieved.");
+			String s = course.getCourseName()+" " + course.getCourseNum()+" is not available as minimum class size was not achieved.";
+			gui.getTheText().removeAll();
+			System.out.println(s);
+			gui.getTheText().setText(s);
 			return;
 		}
 		if(course.checkStudentPrereq(this) == false) {
-			System.out.println("Student is missing prerequisites.");
+			String s = "Student is missing prerequisites.";
+			gui.getTheText().removeAll();
+			System.out.println(s);
+			gui.getTheText().setText(s);
 			return;
 		}
-		System.out.println(course);
-		System.out.println("Enter the lecture section");
-		int sec =scan.nextInt();
+	
+		gui.getTheText().removeAll();
+		System.out.println(course.toString());
+		gui.getTheText().setText(course.toString());
+		int sec = Integer.parseInt(JOptionPane.showInputDialog("Enter the lecture section"));
+		
 		if(course.getCourseOfferingAt(sec-1) == null) { // -1 cuz its a array list
-			System.out.println("the section entered is not available");
-			scan.nextLine();
+			String s = "the section entered is not available";
+			gui.getTheText().removeAll();
+			System.out.println(s);
+			gui.getTheText().setText(s);
 			return;
 		}
 		Registration R = new Registration();
@@ -117,32 +132,38 @@ public class Student {
 		course.getCourseOfferingAt(sec-1).addRegistration(R);
 		course.getCourseOfferingAt(sec-1).addStudent(this);
 		this.addCourseOffering(course.getCourseOfferingAt(sec-1));
-		System.out.println("Course Succussfully added.");
-		scan.nextLine();
+		
+		String s = "Course Succussfully added.";
+		gui.getTheText().removeAll();
+		System.out.println(s);
+		gui.getTheText().setText(s);
+		
 	}
 
-	public void removeCourse() {
-		String name = "";
-		int id = 0;
+	public void removeCourse(String thename, int theid, GUI gui) {
+		String name = thename;
+		int id = theid;
 		CourseOffering courseoffering;
-		
-		System.out.println("Please enter course name to be removed");
-		name = scan.nextLine().toUpperCase();
-		System.out.println("Please enter course number to be removed");
-		id = scan.nextInt();
 		
 		courseoffering = this.searchForCourse(name, id);
 		if(courseoffering == null) {
-			System.out.println("Course not found");
+			String s ="Course not found";
+			gui.getTheText().removeAll();
+			System.out.println(s);
+			gui.getTheText().setText(s);
 			return;
 		}
-		System.out.println("student removed from course");
+		String s ="student removed from course";
+		
+		gui.getTheText().removeAll();
+		System.out.println(s);
+		gui.getTheText().setText(s);
+		
 		this.removeCourseOffering(courseoffering);
 		Registration R = this.searchRegistrar(name, id);
 		this.removeRegistration(R);
 		courseoffering.removeRegistration(R);
 		courseoffering.removeStudent(this);
-		scan.nextLine();
 	}
 	
 	public boolean checkIfMaxCourses() {
