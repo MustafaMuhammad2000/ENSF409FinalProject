@@ -1,3 +1,4 @@
+package registration;
 import java.util.ArrayList;
 
 public class CourseCatalogue {
@@ -53,6 +54,7 @@ public class CourseCatalogue {
 			st += c;  //This line invokes the toString() method of Course
 			st += "\n";
 		}
+		st += "\0";
 		return st;
 	}
 

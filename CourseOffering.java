@@ -1,3 +1,4 @@
+package registration;
 import java.util.ArrayList;
 
 public class CourseOffering {

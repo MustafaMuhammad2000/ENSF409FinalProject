@@ -1,3 +1,4 @@
+package registration;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -7,14 +8,14 @@ public class Student {
 	private int studentId;
 	private ArrayList<CourseOffering> offeringList;
 	private ArrayList<Registration> studentRegList;
-	private Scanner scan;
+
 	
 	public Student (String studentName, int studentId) {
 		this.setStudentName(studentName);
 		this.setStudentId(studentId);
 		studentRegList = new ArrayList<Registration>();
 		offeringList = new ArrayList<CourseOffering>();
-		scan = new Scanner(System.in);
+
 	}
 
 	public String getStudentName() {
@@ -84,32 +85,35 @@ public class Student {
 		return null;
 	}
 
-	public void printStudentCourses() {
+	public String printStudentCourses() {
+		String s = "";
 		if(offeringList.size() == 0) {
-			System.out.println("student is not enrolled in any courses yet");
-			return;
+			s += "student is not enrolled in any courses yet";
+			s += "\0";
+			return s;
 		}
 		for(CourseOffering x: offeringList) {
-			System.out.println(x);
+			s += x;
 		}
+		s+="\0";
+		return s;
 	}
 	
-	public void addCourse(Course course) {
+	public String addCourse(Course course, int sec) {
+		String s = "";
 		if(course.checkMinClassSize() == false) {
-			System.out.println(course.getCourseName()+" " + course.getCourseNum()+" is not available as minimum class size was not achieved.");
-			return;
+			s += course.getCourseName()+" " + course.getCourseNum()+" is not available as minimum class size was not achieved.\n";
+			return s;
 		}
 		if(course.checkStudentPrereq(this) == false) {
-			System.out.println("Student is missing prerequisites.");
-			return;
+			s += "Student is missing prerequisites.\n";
+			return s;
 		}
 		System.out.println(course);
-		System.out.println("Enter the lecture section");
-		int sec =scan.nextInt();
+
 		if(course.getCourseOfferingAt(sec-1) == null) { // -1 cuz its a array list
-			System.out.println("the section entered is not available");
-			scan.nextLine();
-			return;
+			s += "The section entered is not available\n";
+			return s;
 		}
 		Registration R = new Registration();
 		R.completeRegistration(this, course.getCourseOfferingAt(sec-1));
@@ -117,32 +121,26 @@ public class Student {
 		course.getCourseOfferingAt(sec-1).addRegistration(R);
 		course.getCourseOfferingAt(sec-1).addStudent(this);
 		this.addCourseOffering(course.getCourseOfferingAt(sec-1));
-		System.out.println("Course Succussfully added.");
-		scan.nextLine();
+		s += "Course Succussfully added.\n";
+		return s;
 	}
 
-	public void removeCourse() {
-		String name = "";
-		int id = 0;
+	public String removeCourse(String name, int id) {
+		String s = "";
 		CourseOffering courseoffering;
-		
-		System.out.println("Please enter course name to be removed");
-		name = scan.nextLine().toUpperCase();
-		System.out.println("Please enter course number to be removed");
-		id = scan.nextInt();
 		
 		courseoffering = this.searchForCourse(name, id);
 		if(courseoffering == null) {
-			System.out.println("Course not found");
-			return;
+			s += "Course not found\n";
+			return s;
 		}
-		System.out.println("student removed from course");
+		s += "student removed from course\n";
 		this.removeCourseOffering(courseoffering);
 		Registration R = this.searchRegistrar(name, id);
 		this.removeRegistration(R);
 		courseoffering.removeRegistration(R);
 		courseoffering.removeStudent(this);
-		scan.nextLine();
+		return s;
 	}
 	
 	public boolean checkIfMaxCourses() {
